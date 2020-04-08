@@ -1,0 +1,43 @@
+---
+title: "03_dynamic_filter"
+author: "Cristian E. Nuno"
+date: "4/8/2020"
+output: html_document
+---
+
+# Purpose
+
+This RMarkdown demonstrates how to import a separate `.R` file that a function you would like use in this RMarkdown file.
+
+```{r, message=FALSE}
+# load necessary packages
+library(dplyr)
+library(here)
+library(pander)
+
+# load necessary data
+iris_df <- iris
+```
+
+## Source `.R` files
+
+Storing `.R` code in a separate file is good practice when you would like to safely partition logic away from the analysis displayed to the audience while still showing them where it originates from. 
+
+The [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) will execute the `.R` script and make all objects available to you in your current Global Environment.
+
+```{r}
+# load functions
+source(here("R/analysis/functions/dynamic_filter.R"))
+```
+
+## Use the newly imported `filter_df()` function
+
+```{r}
+# use the function to create a new data frame
+iris_filter_df <-
+  filter_df(df=iris_df, keyword="setosa", column_name="Species")
+
+# display the results
+pander(head(iris_filter_df))
+```
+
